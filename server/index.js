@@ -21,8 +21,6 @@ pool
 		console.error("Error connecting to MySQL:", error);
 	});
 
-
-
 // Endpoint to handle the search
 app.post('/search', async (req, res) => {
     const { searchQuery, selectedFilter } = req.body;
