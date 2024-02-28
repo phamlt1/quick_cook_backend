@@ -1,3 +1,12 @@
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const port = 3001;
+
+app.use(express.json());
+app.use(cors());
+app.use(express.json());
+
 const pool = require("../database/index");
 const { fetchDataAndSave } = require("../services/dataMigrationService");
 
@@ -11,16 +20,6 @@ pool
 	.catch((error) => {
 		console.error("Error connecting to MySQL:", error);
 	});
-////////////////////////////////////////////////////
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const port = 3001;
-
-app.use(express.json());
-app.use(cors());
-
-app.use(express.json());
 
 // Endpoint to handle the search
 app.post('/search', async (req, res) => {
@@ -40,11 +39,10 @@ app.post('/search', async (req, res) => {
 			query = 'SELECT * FROM `group` WHERE group_name LIKE ? OR group_pass LIKE ?';
 			break;
 		case 'Managers':
-			query = 'SELECT * FROM manager WHERE manager_name LIKE ? OR user_id LIKE ?'; // Adjust the table name and columns if needed
+			query = 'SELECT * FROM manager WHERE manager_name LIKE ? OR user_id LIKE ?'; 
 			break;
     }
 
-    // Perform the search using the query and searchQuery
     try {
         const connection = await pool.getConnection();
         const [rows] = await connection.execute(query, [`%${searchQuery}%`, `%${searchQuery}%`]);
