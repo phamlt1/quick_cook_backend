@@ -1,11 +1,12 @@
 const axios = require("axios");
 const mysql = require("mysql2/promise");
+require('dotenv').config();
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
 	host: "localhost",
 	user: "root",
-	password: "Kingsley1801!",
+	password: process.env.DB_PASSWORD,
 	database: "quick_cook",
 	waitForConnections: true,
 	connectionLimit: 10,
