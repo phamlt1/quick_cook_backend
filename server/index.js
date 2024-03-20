@@ -56,6 +56,39 @@ app.post('/search', async (req, res) => {
     }
 });
 
+//this is for adding new group
+
+app.post('/add-group', async (req, res) => {
+    const { group_id, group_name, group_pass } = req.body;
+    try {
+        const connection = await pool.getConnection();
+        const [result] = await connection.execute(
+            'INSERT INTO `group` (group_id, group_name, group_pass) VALUES (?, ?, ?)',
+            [group_id, group_name, group_pass]
+        );
+        connection.release();
+        res.json({ success: true, groupId: group_id }); // Return the group_id that was passed in
+    } catch (error) {
+        console.error('Error adding new group:', error);
+        res.status(500).json({ success: false, message: 'Failed to add new group' });
+    }
+});
+
+// Get all groups
+app.get('/group', async (req, res) => {
+    try {
+        const connection = await pool.getConnection();
+        const [rows] = await connection.query('SELECT * FROM `group`');
+        connection.release();
+
+        res.json({ success: true, group: rows });
+    } catch (error) {
+        console.error('Error fetching groups:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch groups' });
+    }
+});
+
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
