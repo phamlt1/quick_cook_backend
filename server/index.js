@@ -92,7 +92,7 @@ app.post('/delete', async (req, res) => {
     }
 });
 
-// Endpoint to handle the update
+// Endpoint to handle the update of user table
 app.put('/update/Users', async (req, res) => {
     const {updateItem} = req.body;
     const {user_id,user_name, user_pass} = updateItem;
@@ -110,6 +110,7 @@ app.put('/update/Users', async (req, res) => {
     }
 });
 
+// Endpoint to handle the update of manager table
 app.put('/update/Managers', async (req, res) => {
     const {updateItem} = req.body;
     const {manager_id, manager_name} = updateItem;
@@ -129,6 +130,7 @@ app.put('/update/Managers', async (req, res) => {
     }
 });
 
+// Endpoint to handle the update of group table
 app.put('/update/Groups', async (req, res) => {
     const {updateItem} = req.body;
     const {group_id, group_name, group_pass} = updateItem;
@@ -148,6 +150,7 @@ app.put('/update/Groups', async (req, res) => {
     }
 });
 
+// Endpoint to handle the update of recipe table
 app.put('/update/Recipes', async (req, res) => {
     const {updateItem} = req.body;
     const {recipe_id, recipe_name, instruction} = updateItem;
