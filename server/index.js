@@ -1,3 +1,17 @@
+require('dotenv').config();
+
+const express = require("express");
+const cors = require("cors");
+const app = express();
+const port = process.env.PORT;
+
+app.use(express.json());
+app.use(cors());
+
+const adminRouter = require("../router/adminRouter");
+
+app.use("/api/admin", adminRouter);
+
 const pool = require("../database/index");
 const { fetchDataAndSave } = require("../services/dataMigrationService");
 
@@ -11,52 +25,6 @@ pool
 	.catch((error) => {
 		console.error("Error connecting to MySQL:", error);
 	});
-////////////////////////////////////////////////////
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const port = 3001;
-
-app.use(express.json());
-app.use(cors());
-
-app.use(express.json());
-
-// Endpoint to handle the search
-app.post('/search', async (req, res) => {
-    const { searchQuery, selectedFilter } = req.body;
-    let query = '';
-    let results = [];
-
-    // Modify the query based on the selected filter
-    switch (selectedFilter) {
-        case 'Users':
-            query = 'SELECT * FROM user_new WHERE user_name LIKE ? OR user_pass LIKE ?';
-            break;
-        case 'Recipes':
-            query = 'SELECT * FROM recipe WHERE recipe_name LIKE ? OR instruction LIKE ?';
-            break;
-		case 'Groups':
-			query = 'SELECT * FROM `group` WHERE group_name LIKE ? OR group_pass LIKE ?';
-			break;
-		case 'Managers':
-			query = 'SELECT * FROM manager WHERE manager_name LIKE ? OR user_id LIKE ?'; // Adjust the table name and columns if needed
-			break;
-    }
-
-    // Perform the search using the query and searchQuery
-    try {
-        const connection = await pool.getConnection();
-        const [rows] = await connection.execute(query, [`%${searchQuery}%`, `%${searchQuery}%`]);
-        results = rows;
-        connection.release();
-
-        res.json({ success: true, results });
-    } catch (error) {
-        console.error('Error during database query:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
-    }
-});
 
 // Endpoint to handle the delete
 app.post('/delete', async (req, res) => {
@@ -169,5 +137,5 @@ app.put('/update/Recipes', async (req, res) => {
     }
 });
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+	console.log(`Server running on port ${port}`);
 });
